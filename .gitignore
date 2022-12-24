@@ -1,2 +1,5 @@
 .env
 .cache-veka33
+.yaml
+requirments.txt
+top_songs.py
