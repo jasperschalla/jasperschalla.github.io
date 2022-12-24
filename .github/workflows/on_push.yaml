@@ -1,0 +1,41 @@
+name: On Push Run
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: checkout repo content
+        uses: actions/checkout@v2
+
+      - name: setup python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.11.0"
+
+      - name: install python packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt      
+
+      - name: execute python script
+        env:
+          CLIENTID: ${{ secrets.CLIENT_ID }}
+          SECRET: ${{ secrets.CLIENT_SECRET }}
+          .cache-veka33: ${{ secrets.TOKEN }} 
+        run: top_songs.py
+
+      - name: commit files
+        run: |
+          git config --local user.email "jasper.schalla@web.de"
+          git config --local user.name "jasperschalla"
+          git add -A
+          git commit -m "Updata data" -a
+
+      - name: push changes
+        uses: ad-m/github-push-action@v0.6.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          branch: main
