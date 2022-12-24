@@ -24,7 +24,7 @@ jobs:
         env:
           CLIENTID: ${{ secrets.CLIENT_ID }}
           SECRET: ${{ secrets.CLIENT_SECRET }}
-          .cache-veka33: ${{ secrets.TOKEN }} 
+          .cache-veka33: ${{ secrets.CACHE }} 
         run: python top_songs.py
 
       - name: commit files
