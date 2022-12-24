@@ -4,15 +4,17 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
 import os
 import requests
-from dotenv import load_dotenv   
 
-
-load_dotenv()                  
+print("Script starts")
 
 username = "veka33"
 client_secret = os.environ.get("SECRET")
 client_id = os.environ.get("CLIENTID")
 redirect_uri = 'http://localhost:8888/callback'
+
+print("Envirables have been read")
+print(client_secret)
+print(client_id)
 
 client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret) 
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
