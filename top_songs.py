@@ -19,7 +19,7 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 scope = 'user-top-read'
 token = util.prompt_for_user_token(username=username, scope=scope,redirect_uri=redirect_uri,
-                                   client_id=client_id,client_secret=client_secret)
+                                   client_id=client_id,client_secret=client_secret,show_dialog=False)
 
 
 if token:
