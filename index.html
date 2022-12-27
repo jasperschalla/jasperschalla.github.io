@@ -1,6 +1,196 @@
 <!DOCTYPE html>
 <html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	</head>
+	<style>
+
+		html {
+			margin: 0;
+			padding: 0;
+			width: 100vw;
+			height: 100vh;
+		}
+
+		:root {
+			--main-bg-color: rgb(47, 44, 44);
+			--feat-color: rgb(13, 14, 13);
+			--font-color: white;
+		}
+
+		body {
+			background-color: var(--main-bg-color);
+			color: var(--font-color);
+			overflow-x: hidden;
+		}
+
+		#header {
+			text-align: center;
+		}
+
+		#body {
+			padding: 3rem;
+		}
+
+		#songs {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			width: 75%;
+			margin: 0 auto;
+		}
+
+		.entry {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			margin-bottom: 1.5rem;
+		}
+
+		.entry > p:first-child{
+			margin-left: 3rem;
+		}
+
+		.entry > img {
+			margin-left: 3rem;
+		}
+
+		.entry > p:last-child {
+			margin-left: 3rem;
+		}
+
+		#btn-div {
+			display: flex;
+			width: 75%;
+			margin: 0 auto;
+			justify-content: center;
+			margin-bottom: 4rem;
+		}
+
+		button {
+			width: 100px;
+			font-size: 18px;
+			border: solid;
+			color: var(--font-color);
+			background-color: var(--feat-color);
+			border-color: white;
+			border-width: 1px;
+			cursor: pointer;
+		}
+
+		button:first-child {
+			border-top-left-radius: 5px;
+			border-bottom-left-radius: 5px;
+		}
+
+		button:last-child {
+			border-top-right-radius: 5px;
+			border-bottom-right-radius: 5px;
+		}
+
+		.active {
+			background-color: rgb(48, 47, 47);
+		}
+
+
+	</style>
+	<script>
+
+	showSongs = function(time) {
+		const div = document.getElementById("songs");
+		div.textContent = '';
+
+		const list = document.createDocumentFragment();
+
+		const btn = document.getElementById(time);
+		
+
+		fetch("https://jasperschalla.github.io/top_songs.json")
+			.then(response => response.json())
+			.then(data => {
+
+				console.log(data);
+				console.log(time);
+				let songs = data[time];
+				
+				for (let i=0;i<songs.songs.length;i++){
+					let div = document.createElement("div");
+					let counter = document.createElement("p");
+					let text = document.createElement("p");
+					let cover = document.createElement("img");
+
+					div.classList.add("entry");
+
+					counter.innerHTML = `${i+1}.`;
+
+					cover.src = `${songs.covers[i]}`;
+					cover.style.width = "100px";
+
+					text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
+
+					div.appendChild(counter);
+					div.appendChild(cover);
+					div.appendChild(text);
+					list.appendChild(div);
+				}
+				div.appendChild(list);
+			}).catch(error => console.log(error));
+		
+
+	}
+
+	window.onload = function () {
+
+		const div = document.getElementById("songs");
+		const list = document.createDocumentFragment();
+
+		const short = document.getElementById("short");
+		short.classList.add("active");
+
+		fetch("https://jasperschalla.github.io/top_songs.json")
+			.then(response => response.json())
+			.then(data => {
+				let songs = data.short;
+				
+				for (let i=0;i<songs.songs.length;i++){
+					let div = document.createElement("div");
+					let counter = document.createElement("p");
+					let text = document.createElement("p");
+					let cover = document.createElement("img");
+
+					div.classList.add("entry");
+
+					counter.innerHTML = `${i+1}.`;
+
+					cover.src = `${songs.covers[i]}`;
+					cover.style.width = "100px";
+
+					text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
+
+					div.appendChild(counter);
+					div.appendChild(cover);
+					div.appendChild(text);
+					list.appendChild(div);
+				}
+				div.appendChild(list);
+			}).catch(error => console.log(error));
+		
+
+	}
+	</script>
 	<body>
-		<h1>Hello World!</h1>
+		<div id="header">
+			<h1>Spotify Stats</h1>
+		</div>
+		<div id="body">
+			<div id="btn-div">
+				<button id="short" onclick='showSongs("short")''>Short</button>
+				<button id="medium" onclick='showSongs("medium")''>Medium</button>
+				<button id="long" onclick='showSongs("long")''>Long</button>
+			</div>
+			<div id="songs">
+				
+			</div>
+		</div>
 	</body>
 </html>
