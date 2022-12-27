@@ -5,6 +5,7 @@ from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
 import os
 from git import Repo
+from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -68,7 +69,7 @@ if token:
     stats_medium = {"artists":artists_medium,"songs":songs_medium,"covers":covers_medium}
     stats_short = {"artists":artists_short,"songs":songs_short,"covers":covers_short}
 
-    top_songs = {"long":stats_long,"medium":stats_medium,"short":stats_short}
+    top_songs = {"long":stats_long,"medium":stats_medium,"short":stats_short,"updated":datetime.today().strftime('%Y-%m-%d %H:%M:%S')}
 
     with open("./top_songs.json","w") as fp:
         json.dump(top_songs,fp)
