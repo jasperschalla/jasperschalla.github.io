@@ -14,7 +14,7 @@
 
 		:root {
 			--main-bg-color: rgb(47, 44, 44);
-			--feat-color: rgb(13, 14, 13);
+			--feat-color: #1ED760;
 			--font-color: white;
 		}
 
@@ -29,7 +29,7 @@
 		}
 
 		#body {
-			padding: 3rem;
+			padding: 3rem 0;
 		}
 
 		#songs {
@@ -48,15 +48,14 @@
 		}
 
 		.entry > p:first-child{
-			margin-left: 3rem;
 		}
 
 		.entry > img {
-			margin-left: 3rem;
+			margin-left: 2rem;
 		}
 
 		.entry > p:last-child {
-			margin-left: 3rem;
+			margin-left: 2rem;
 		}
 
 		#btn-div {
@@ -71,25 +70,26 @@
 			width: 100px;
 			font-size: 18px;
 			border: solid;
-			color: var(--font-color);
+			color: black;
 			background-color: var(--feat-color);
-			border-color: white;
-			border-width: 1px;
+			border: none;
 			cursor: pointer;
 		}
 
 		button:first-child {
 			border-top-left-radius: 5px;
 			border-bottom-left-radius: 5px;
+			border-right: solid;
 		}
 
 		button:last-child {
 			border-top-right-radius: 5px;
 			border-bottom-right-radius: 5px;
+			border-left: solid;
 		}
 
 		.active {
-			background-color: rgb(48, 47, 47);
+			background-color: #107935;
 		}
 
 
@@ -103,7 +103,15 @@
 		const list = document.createDocumentFragment();
 
 		const btn = document.getElementById(time);
-		
+
+		const btnChilds= document.getElementById("btn-div").children;
+
+		for(let i=0;i<btnChilds.length;i++){
+			btnChilds[i].classList.remove("active");
+		}
+
+		btn.classList.add("active");
+
 
 		fetch("https://jasperschalla.github.io/top_songs.json")
 			.then(response => response.json())
@@ -124,7 +132,7 @@
 					counter.innerHTML = `${i+1}.`;
 
 					cover.src = `${songs.covers[i]}`;
-					cover.style.width = "100px";
+					cover.style.width = "80px";
 
 					text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
 
@@ -163,7 +171,7 @@
 					counter.innerHTML = `${i+1}.`;
 
 					cover.src = `${songs.covers[i]}`;
-					cover.style.width = "100px";
+					cover.style.width = "80px";
 
 					text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
 
