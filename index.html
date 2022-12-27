@@ -151,9 +151,12 @@
 
 		const div = document.getElementById("songs");
 		const list = document.createDocumentFragment();
+		const footerList = document.createDocumentFragment();
 
 		const short = document.getElementById("short");
 		short.classList.add("active");
+
+		const footer = document.getElementById("footer");
 
 		fetch("https://jasperschalla.github.io/top_songs.json")
 			.then(response => response.json())
@@ -179,8 +182,17 @@
 					div.appendChild(cover);
 					div.appendChild(text);
 					list.appendChild(div);
+
 				}
 				div.appendChild(list);
+
+				console.log(data);
+
+				let updated = document.createElement("p");
+				updated.innerHTML = `${data.updated}`;
+				footerList.appendChild(updated);
+				footer.appendChild(footerList);
+
 			}).catch(error => console.log(error));
 		
 
@@ -199,6 +211,8 @@
 			<div id="songs">
 				
 			</div>
+		</div>
+		<div id="footer">
 		</div>
 	</body>
 </html>
