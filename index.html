@@ -29,7 +29,7 @@
 		}
 
 		#body {
-			padding: 3rem 0 1rem 0;
+			padding: 2rem 0 1rem 0;
 
 		}
 
@@ -49,9 +49,14 @@
 		}
 
 		.entry > p:first-child{
+			font-size: 18px;
+			background-color: var(--feat-color);
+			color: black;
+			padding: 0.35rem;
+			border-radius: 50px;
 		}
 
-		.entry > img {
+		.entry > a {
 			margin-left: 2rem;
 		}
 
@@ -134,6 +139,7 @@
 					let div = document.createElement("div");
 					let counter = document.createElement("p");
 					let text = document.createElement("p");
+					let coverLink = document.createElement("a");
 					let cover = document.createElement("img");
 
 					div.classList.add("entry");
@@ -145,8 +151,11 @@
 
 					text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
 
+					coverLink.appendChild(cover);
+					coverLink.href = `https://open.spotify.com/search/${encodeURIComponent(songs.songs[i])}`;
+
 					div.appendChild(counter);
-					div.appendChild(cover);
+					div.appendChild(coverLink);
 					div.appendChild(text);
 					list.appendChild(div);
 				}
@@ -177,6 +186,7 @@
 					let counter = document.createElement("p");
 					let text = document.createElement("p");
 					let cover = document.createElement("img");
+					let coverLink = document.createElement("a");
 
 					div.classList.add("entry");
 
@@ -187,8 +197,11 @@
 
 					text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
 
+					coverLink.appendChild(cover);
+					coverLink.href = `https://open.spotify.com/search/${encodeURIComponent(songs.songs[i])}`;
+
 					div.appendChild(counter);
-					div.appendChild(cover);
+					div.appendChild(coverLink);
 					div.appendChild(text);
 					list.appendChild(div);
 
@@ -209,7 +222,7 @@
 	</script>
 	<body>
 		<div id="header">
-			<h1>Spotify Stats</h1>
+			<h1>Spotify Top-Songs</h1>
 		</div>
 		<div id="body">
 			<div id="btn-div">
