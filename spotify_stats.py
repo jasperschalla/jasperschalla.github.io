@@ -50,7 +50,7 @@ if token:
 
     for i in results_artist_medium["items"]:
 
-        artist_artists_medium.append(["name"])
+        artist_artists_medium.append(i["name"])
         artist_covers_medium.append(i["images"][0]["url"])
 
     for i in results_artist_short["items"]:
