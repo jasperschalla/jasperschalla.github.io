@@ -25,7 +25,19 @@
 		}
 
 		#header {
-			text-align: center;
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.navlink:first-child {
+			margin-right: 2rem;
+		}
+
+		.active_link {
+			text-decoration: underline;
+			text-decoration-color: var(--feat-color) ;
 		}
 
 		#body {
@@ -39,6 +51,17 @@
 			justify-content: center;
 			width: 75%;
 			margin: 0 auto;
+		}
+
+		@media screen and (min-width: 900px) {
+			#songs {
+				width: 45%;
+				border-left: solid;
+				border-right: solid;
+				padding: 0 5rem 0 5rem;
+				border-width: 1px;
+				border-color: rgb(62, 62, 62);
+			}
 		}
 
 		.entry {
@@ -109,6 +132,20 @@
 
 	</style>
 	<script>
+
+	clickLink = function(id) {
+		
+		const headerChilds = document.getElementById("header").children;
+
+		for(let i=0;i<headerChilds.length;i++){
+			headerChilds[i].classList.remove("active_link");
+		}
+
+		console.log(`#${id}`);
+
+		document.getElementById(id).classList.add("active_link");
+
+	}
 
 	showSongs = function(time) {
 		const div = document.getElementById("songs");
@@ -222,7 +259,9 @@
 	</script>
 	<body>
 		<div id="header">
-			<h1>Spotify Top-Songs</h1>
+			<!--<h1>Spotify Top-Songs</h1>-->
+			<a onclick="clickLink(this.id)" class="navlink active_link" id="song_link"><h2>Songs</h2></a>
+			<a onclick="clickLink(this.id)" class="navlink" id="artist_link"><h2>Artists</h2></a>
 		</div>
 		<div id="body">
 			<div id="btn-div">
