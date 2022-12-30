@@ -36,27 +36,33 @@ if token:
 
     artist_artists_long = []
     artist_covers_long = []
+    artist_id_long = []
 
     artist_artists_medium = []
     artist_covers_medium = []
+    artist_id_medium = []
 
     artist_artists_short = []
     artist_covers_short = []
+    artist_id_short = []
 
     for i in results_artist_long["items"]:
 
         artist_artists_long.append(i["name"])
         artist_covers_long.append(i["images"][0]["url"])
+        artist_id_long.append(i["id"])
 
     for i in results_artist_medium["items"]:
 
         artist_artists_medium.append(i["name"])
         artist_covers_medium.append(i["images"][0]["url"])
+        artist_id_medium.append(i["id"])
 
     for i in results_artist_short["items"]:
 
         artist_artists_short.append(i["name"])
         artist_covers_short.append(i["images"][0]["url"])
+        artist_id_short.append(i["id"])
 
     results_song_long = sp.current_user_top_tracks(limit=20,offset=0,time_range='long_term')
     results_song_medium = sp.current_user_top_tracks(limit=20,offset=0,time_range='medium_term')
@@ -97,9 +103,9 @@ if token:
     song_stats_medium = {"artists":song_artists_medium,"songs":song_songs_medium,"covers":song_covers_medium}
     song_stats_short = {"artists":song_artists_short,"songs":song_songs_short,"covers":song_covers_short}
 
-    artist_stats_long = {"artists":artist_artists_long,"covers":artist_covers_long}
-    artist_stats_medium = {"artists":artist_artists_medium,"covers":artist_covers_medium}
-    artist_stats_short = {"artists":artist_artists_short,"covers":artist_covers_short}
+    artist_stats_long = {"artists":artist_artists_long,"covers":artist_covers_long,"ids":artist_id_long}
+    artist_stats_medium = {"artists":artist_artists_medium,"covers":artist_covers_medium,"ids":artist_id_medium}
+    artist_stats_short = {"artists":artist_artists_short,"covers":artist_covers_short,"ids":artist_id_short}
 
     top_stats = {"songs":{"long":song_stats_long,"medium":song_stats_medium,"short":song_stats_short},
                  "artists":{"long":artist_stats_long,"medium":artist_stats_medium,"short":artist_stats_short},
