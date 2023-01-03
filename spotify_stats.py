@@ -111,7 +111,7 @@ if token:
                  "artists":{"long":artist_stats_long,"medium":artist_stats_medium,"short":artist_stats_short},
                  "updated":datetime.today().strftime('%Y-%m-%d %H:%M:%S')}
 
-    with open("./spotify_stats.json","w") as fp:
+    with open("/home/pi//Documents/python/jasperschalla.github.io/spotify_stats.json","w") as fp:
         json.dump(top_stats,fp)
 
     repo = Repo(PATH_OF_GIT_REPO)
