@@ -8,9 +8,9 @@ from git import Repo
 from datetime import datetime
 from dotenv import load_dotenv
 
-load_dotenv()
+load_dotenv('/home/pi/Documents/python/jasperschalla.github.io/.env')
 
-PATH_OF_GIT_REPO = r'D:\GitRepos\jasperschalla.github.io\.git'  
+PATH_OF_GIT_REPO = '/home/pi/Documents/python/jasperschalla.github.io/.git'  
 COMMIT_MESSAGE = 'Update Spotify data'
 
 username = "veka33"
