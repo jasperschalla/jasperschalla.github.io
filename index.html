@@ -412,45 +412,48 @@
 				footerList.appendChild(updated);
 				footer.appendChild(footerList);
 
-				fetch("https://jasperschalla.github.io/spotify_old_stats.json")
-				.then(response => response.json())
-				.then(data => {
+			}).catch(error => console.log(error));
+
+
+		fetch("https://jasperschalla.github.io/spotify_old_stats.json")
+			.then(response => response.json())
+			.then(data => {
+				
+				const regex = /\d{1,2}\.\n\n(.*) -.*/;
+				let entries = document.getElementById("songs").children;
+				let songs = data.songs.short;
+
+				console.log(entries);
+
+				for (let i=0;i<songs.songs.length;i++){
+
+					let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText)[1]) + 1;
+					let song_title = songs.songs[i]
+					let position_change = (i+1) - new_pos;
+
+					let changeDiv = document.createElement("div");
+
+					let change = document.createElement("p");
+					let changeSymbol = document.createElement("i");
+
+					change.innerText = `${position_change !== 0? Math.abs(position_change) : ''}`;
 					
-					const regex = /\d{1,2}\.\n\n(.*) -.*/;
-					let entries = document.getElementById("songs").children;
-					let songs = data.songs.short;
-
-					for (let i=0;i<songs.songs.length;i++){
-
-						let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText)[1]) + 1;
-						let song_title = songs.songs[i]
-						let position_change = (i+1) - new_pos;
-
-						let changeDiv = document.createElement("div");
-
-						let change = document.createElement("p");
-						let changeSymbol = document.createElement("i");
-
-						change.innerText = `${position_change !== 0? Math.abs(position_change) : ''}`;
-						
-						if (position_change<0){
-							changeSymbol.classList.add("fa-solid","fa-circle-down");
-						} else if (position_change>0){
-							changeSymbol.classList.add("fa-solid", "fa-circle-up");
-						} else {
-							changeSymbol.classList.add("fa-solid", "fa-circle-minus");
-						}
-
-						changeDiv.classList.add("change");
-						changeDiv.appendChild(changeSymbol);
-						changeDiv.appendChild(change);
-
-						entries[i].appendChild(changeDiv);
-
-
+					if (position_change<0){
+						changeSymbol.classList.add("fa-solid","fa-circle-down");
+					} else if (position_change>0){
+						changeSymbol.classList.add("fa-solid", "fa-circle-up");
+					} else {
+						changeSymbol.classList.add("fa-solid", "fa-circle-minus");
 					}
 
-				}).catch(error => console.log(error));
+					changeDiv.classList.add("change");
+					changeDiv.appendChild(changeSymbol);
+					changeDiv.appendChild(change);
+
+					entries[i].appendChild(changeDiv);
+
+
+				}
 
 			}).catch(error => console.log(error));
 
