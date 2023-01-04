@@ -16,7 +16,7 @@ COMMIT_MESSAGE = 'Update Spotify data'
 username = "veka33"
 client_secret = os.environ.get("SECRET")
 client_id = os.environ.get("CLIENTID")
-redirect_uri = 'http://localhost:8888/callback'
+redirect_uri = 'http://localhost:8080/callback'
 
 client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret) 
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
@@ -111,7 +111,7 @@ if token:
                  "artists":{"long":artist_stats_long,"medium":artist_stats_medium,"short":artist_stats_short},
                  "updated":datetime.today().strftime('%Y-%m-%d %H:%M:%S')}
 
-    with open("/home/pi//Documents/python/jasperschalla.github.io/spotify_stats.json","w") as fp:
+    with open("/home/pi/Documents/python/jasperschalla.github.io/spotify_stats.json","w") as fp:
         json.dump(top_stats,fp)
 
     repo = Repo(PATH_OF_GIT_REPO)
