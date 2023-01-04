@@ -2,6 +2,7 @@
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
 	</head>
 	<style>
 
@@ -30,10 +31,6 @@
 			align-items: center;
 			justify-content: center;
 		}
-	
-		.navlink {
-			cursor: pointer;
-		}
 
 		.navlink:first-child {
 			margin-right: 2rem;
@@ -53,7 +50,7 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: center;
-			width: 75%;
+			width: 85%;
 			margin: 0 auto;
 		}
 
@@ -133,6 +130,43 @@
 			color: rgb(175, 169, 169);
 		}
 
+		.change {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			width:fit-content;
+			margin-left: 0.5rem;
+		}
+
+		.change > p {
+			font-size: 12px;
+		}
+
+		.title {
+			width: 45% !important;
+			margin-left: 1rem;
+			overflow-x: hidden;
+		}
+
+		.counter {
+			width: 5% !important;
+		}
+
+		.fa-circle-minus {
+			font-size: 24px !important;
+			color: rgb(160, 158, 158) !important;
+		}
+
+		.fa-circle-down {
+			font-size: 24px !important;
+			color: rgb(133, 55, 55) !important;
+		}
+
+		.fa-circle-up {
+			font-size: 24px !important;
+			color: rgb(100, 146, 69) !important;
+		}
 
 	</style>
 	<script>
@@ -184,6 +218,7 @@
 						let cover = document.createElement("img");
 
 						div.classList.add("entry");
+						text.classList.add("title");
 
 						counter.innerHTML = `${i+1}.`;
 
@@ -204,8 +239,6 @@
 					} else {
 
 						let artists = data.artists[time];
-
-						console.log(artists);
 					
 						for (let i=0;i<artists.artists.length;i++){
 							let div = document.createElement("div");
@@ -215,6 +248,7 @@
 							let coverLink = document.createElement("a");
 
 							div.classList.add("entry");
+							text.classList.add("title");
 
 							counter.innerHTML = `${i+1}.`;
 
@@ -244,7 +278,83 @@
 				div.appendChild(list);
 			}).catch(error => console.log(error));
 		
+			fetch("https://jasperschalla.github.io/spotify_old_stats.json")
+			.then(response => response.json())
+			.then(data => {
 
+				if (document.getElementById("song_link").classList.contains("active_link")) {
+				
+					const regex = /\d{1,2}\.\n\n(.*) -.*/;
+					let entries = document.getElementById("songs").children;
+					let songs = data.songs[time];
+
+					for (let i=0;i<songs.songs.length;i++){
+
+
+						let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText)[1]) + 1;
+						let position_change = (i+1) - new_pos;
+
+						let changeDiv = document.createElement("div");
+
+						let change = document.createElement("p");
+						let changeSymbol = document.createElement("i");
+
+						change.innerText = `${position_change !== 0? position_change : ''}`;
+						
+						if (position_change<0){
+							changeSymbol.classList.add("fa-solid","fa-circle-down");
+						} else if (position_change>0){
+							changeSymbol.classList.add("fa-solid", "fa-circle-up");
+						} else {
+							changeSymbol.classList.add("fa-solid", "fa-circle-minus");
+						}
+
+						changeDiv.classList.add("change");
+						changeDiv.appendChild(changeSymbol);
+						changeDiv.appendChild(change);
+
+						entries[i].appendChild(changeDiv);
+
+
+					}
+				} else {
+
+					const regex = /\d{1,2}\.\n\n(.*)/;
+					let entries = document.getElementById("songs").children;
+					let artists = data.artists[time];
+
+					for (let i=0;i<artists.artists.length;i++){
+
+
+						let new_pos = artists.artists.indexOf(regex.exec(entries[i].innerText)[1]) + 1;
+						let position_change = (i+1) - new_pos;
+
+						let changeDiv = document.createElement("div");
+
+						let change = document.createElement("p");
+						let changeSymbol = document.createElement("i");
+
+						change.innerText = `${position_change !== 0? Math.abs(position_change) : ''}`;
+
+						if (position_change<0){
+							changeSymbol.classList.add("fa-solid","fa-circle-down");
+						} else if (position_change>0){
+							changeSymbol.classList.add("fa-solid", "fa-circle-up");
+						} else {
+							changeSymbol.classList.add("fa-solid", "fa-circle-minus");
+						}
+
+						changeDiv.classList.add("change");
+						changeDiv.appendChild(changeSymbol);
+						changeDiv.appendChild(change);
+
+						entries[i].appendChild(changeDiv);
+
+						}
+
+				}
+
+			}).catch(error => console.log(error));
 	}
 
 	window.onload = function () {
@@ -272,6 +382,8 @@
 					let coverLink = document.createElement("a");
 
 					div.classList.add("entry");
+					text.classList.add("title");
+					counter.classList.add("counter");
 
 					counter.innerHTML = `${i+1}.`;
 
@@ -297,7 +409,47 @@
 				footer.appendChild(footerList);
 
 			}).catch(error => console.log(error));
-		
+
+
+		fetch("https://jasperschalla.github.io/spotify_old_stats.json")
+			.then(response => response.json())
+			.then(data => {
+				
+				const regex = /\d{1,2}\.\n\n(.*) -.*/;
+				let entries = document.getElementById("songs").children;
+				let songs = data.songs.short;
+
+				for (let i=0;i<songs.songs.length;i++){
+
+					let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText)[1]) + 1;
+					let song_title = songs.songs[i]
+					let position_change = (i+1) - new_pos;
+
+					let changeDiv = document.createElement("div");
+
+					let change = document.createElement("p");
+					let changeSymbol = document.createElement("i");
+
+					change.innerText = `${position_change !== 0? Math.abs(position_change) : ''}`;
+					
+					if (position_change<0){
+						changeSymbol.classList.add("fa-solid","fa-circle-down");
+					} else if (position_change>0){
+						changeSymbol.classList.add("fa-solid", "fa-circle-up");
+					} else {
+						changeSymbol.classList.add("fa-solid", "fa-circle-minus");
+					}
+
+					changeDiv.classList.add("change");
+					changeDiv.appendChild(changeSymbol);
+					changeDiv.appendChild(change);
+
+					entries[i].appendChild(changeDiv);
+
+
+				}
+
+			}).catch(error => console.log(error));
 
 	}
 	</script>
@@ -309,9 +461,9 @@
 		</div>
 		<div id="body">
 			<div id="btn-div">
-				<button id="short" onclick='showList("short")''>Short</button>
-				<button id="medium" onclick='showList("medium")''>Medium</button>
-				<button id="long" onclick='showList("long")''>Long</button>
+				<button id="short" onclick='showList("short")'>Short</button>
+				<button id="medium" onclick='showList("medium")'>Medium</button>
+				<button id="long" onclick='showList("long")'>Long</button>
 			</div>
 			<div id="songs">
 				
