@@ -23,16 +23,12 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 scope = 'user-top-read'
 
-try:
 
-    token = util.prompt_for_user_token(username=username, scope=scope,redirect_uri=redirect_uri,
-                                   client_id=client_id,client_secret=client_secret,show_dialog=False,
-                                   cache_path='/home/pi/Documents/python/jasperschalla.github.io/.cache-veka33')
+print(os.path.isfile('/home/pi/Documents/python/jasperschalla.github.io/.cache-veka33')) 
+token = util.prompt_for_user_token(username=username, scope=scope,redirect_uri=redirect_uri,
+                                    client_id=client_id,client_secret=client_secret,show_dialog=False,
+                                    cache_path='/home/pi/Documents/python/jasperschalla.github.io/.cache-veka33')
 
-except Exception:
-
-    token = util.prompt_for_user_token(username=username, scope=scope,redirect_uri=redirect_uri,
-                                   client_id=client_id,client_secret=client_secret,show_dialog=False)
 
 
 if token:
