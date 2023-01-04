@@ -288,7 +288,6 @@
 
 						for (let i=0;i<songs.songs.length;i++){
 
-
 							let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
 							let position_change = (i+1) - new_pos;
 
@@ -344,13 +343,13 @@
 							let change = document.createElement("p");
 							let changeSymbol = document.createElement("i");
 
-							if (songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])===-1){
+							if (artists.artists.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])===-1){
 								change.innerText = "<20";
 							} else {
 								change.innerText = `${position_change !== 0? Math.abs(position_change) : ''}`;
 							}
 						
-							if (songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])!==-1){
+							if (artists.artists.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])!==-1){
 								if (position_change<0){
 									changeSymbol.classList.add("fa-solid","fa-circle-down");
 								} else if (position_change>0){
