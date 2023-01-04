@@ -3,6 +3,7 @@ import json
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 import spotipy.util as util
+from spotipy.oauth2 import SpotifyOAuth
 import os
 from git import Repo
 from datetime import datetime
@@ -23,13 +24,9 @@ sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
 
 scope = 'user-top-read'
 
-
-print(os.path.isfile('/home/pi/Documents/python/jasperschalla.github.io/.cache-veka33')) 
 token = util.prompt_for_user_token(username=username, scope=scope,redirect_uri=redirect_uri,
                                     client_id=client_id,client_secret=client_secret,show_dialog=False,
                                     cache_path='/home/pi/Documents/python/jasperschalla.github.io/.cache-veka33')
-
-
 
 if token:
     sp = spotipy.Spotify(auth=token)
