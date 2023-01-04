@@ -288,14 +288,14 @@
 
 				if (document.getElementById("song_link").classList.contains("active_link")) {
 				
-					const regex = /\d{1,2}\.\n\n(.*) -.*/;
+					const regex = /\d{1,2}\.(.*) -.*/;
 					let entries = document.getElementById("songs").children;
 					let songs = data.songs[time];
 
 					for (let i=0;i<songs.songs.length;i++){
 
 
-						let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText)[1]) + 1;
+						let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
 						let position_change = (i+1) - new_pos;
 
 						let changeDiv = document.createElement("div");
@@ -315,7 +315,11 @@
 
 						changeDiv.classList.add("change");
 						changeDiv.appendChild(changeSymbol);
-						changeDiv.appendChild(change);
+
+
+						if (position_change!==0) {
+							changeDiv.appendChild(change);
+						}
 
 						entries[i].appendChild(changeDiv);
 
@@ -323,14 +327,14 @@
 					}
 				} else {
 
-					const regex = /\d{1,2}\.\n\n(.*)/;
+					const regex = /\d{1,2}\.(.*)/;
 					let entries = document.getElementById("songs").children;
 					let artists = data.artists[time];
 
 					for (let i=0;i<artists.artists.length;i++){
 
 
-						let new_pos = artists.artists.indexOf(regex.exec(entries[i].innerText)[1]) + 1;
+						let new_pos = artists.artists.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
 						let position_change = (i+1) - new_pos;
 
 						let changeDiv = document.createElement("div");
@@ -350,7 +354,10 @@
 
 						changeDiv.classList.add("change");
 						changeDiv.appendChild(changeSymbol);
-						changeDiv.appendChild(change);
+						
+						if (position_change!==0) {
+							changeDiv.appendChild(change);
+						}
 
 						entries[i].appendChild(changeDiv);
 
@@ -425,9 +432,7 @@
 
 				for (let i=0;i<songs.songs.length;i++){
 
-					console.log(entries[i].innerText);
-					console.log(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""));
-					let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace("\n",""))[1]) + 1;
+					let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
 
 					let song_title = songs.songs[i]
 					let position_change = (i+1) - new_pos;
@@ -449,7 +454,10 @@
 
 					changeDiv.classList.add("change");
 					changeDiv.appendChild(changeSymbol);
-					changeDiv.appendChild(change);
+					
+					if (position_change!==0) {
+							changeDiv.appendChild(change);
+						}
 
 					entries[i].appendChild(changeDiv);
 
