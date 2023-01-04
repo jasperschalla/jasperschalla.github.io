@@ -423,11 +423,12 @@
 				let entries = document.getElementById("songs").children;
 				let songs = data.songs.short;
 
-				console.log(entries);
-
 				for (let i=0;i<songs.songs.length;i++){
 
+					console.log(entries[i].innerText);
+					console.log(regex);
 					let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText)[1]) + 1;
+
 					let song_title = songs.songs[i]
 					let position_change = (i+1) - new_pos;
 
