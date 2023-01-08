@@ -288,8 +288,8 @@
 
 						for (let i=0;i<songs.songs.length;i++){
 
-							let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
-							let position_change = (i+1) - new_pos;
+							let old_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
+							let position_change = old_pos - (i+1);
 
 							let changeDiv = document.createElement("div");
 
@@ -335,8 +335,8 @@
 						for (let i=0;i<artists.artists.length;i++){
 
 
-							let new_pos = artists.artists.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
-							let position_change = (i+1) - new_pos;
+							let old_pos = artists.artists.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
+							let position_change = old_pos - (i+1);
 
 							let changeDiv = document.createElement("div");
 
@@ -444,11 +444,11 @@
 
 					for (let i=0;i<songs.songs.length;i++){
 
-						let new_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
+						let old_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
 
 						let song_title = songs.songs[i]
 
-						let position_change = (i+1) - new_pos;
+						let position_change = old_pos - (i+1);
 
 						let changeDiv = document.createElement("div");
 
