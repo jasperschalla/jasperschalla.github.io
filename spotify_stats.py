@@ -13,7 +13,7 @@ load_dotenv('/home/pi/Documents/python/jasperschalla.github.io/.env')
 
 with open("/home/pi/Documents/python/jasperschalla.github.io/spotify_stats.json","r") as old:
     with open("/home/pi/Documents/python/jasperschalla.github.io/spotify_old_stats.json","w") as new:
-        json.dump(old.read(),new)
+        json.dump(json.loads(old.read()),new)
 
 PATH_OF_GIT_REPO = '/home/pi/Documents/python/jasperschalla.github.io/.git'  
 COMMIT_MESSAGE = 'Update Spotify data'
