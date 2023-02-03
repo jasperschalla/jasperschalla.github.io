@@ -1,513 +1,572 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css">
-	</head>
-	<style>
-
-		html {
-			margin: 0;
-			padding: 0;
-			width: 100vw;
-			height: 100vh;
-		}
-
-		:root {
-			--main-bg-color: rgb(47, 44, 44);
-			--feat-color: #1ED760;
-			--font-color: white;
-		}
-
-		body {
-			background-color: var(--main-bg-color);
-			color: var(--font-color);
-			overflow-x: hidden;
-		}
-
-		#header {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			justify-content: center;
-		}
-
-		.navlink {
-			cursor: pointer;
-		}
-
-		.navlink:first-child {
-			margin-right: 2rem;
-		}
-
-		.active_link {
-			text-decoration: underline;
-			text-decoration-color: var(--feat-color) ;
-		}
-
-		#body {
-			padding: 2rem 0 1rem 0;
-
-		}
-
-		#songs {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			width: 85%;
-			margin: 0 auto;
-		}
-
-		@media screen and (min-width: 900px) {
-			#songs {
-				width: 45%;
-				border-left: solid;
-				border-right: solid;
-				padding: 0 5rem 0 5rem;
-				border-width: 1px;
-				border-color: rgb(62, 62, 62);
-			}
-		}
-
-		.entry {
-			display: flex;
-			flex-direction: row;
-			align-items: center;
-			margin-bottom: 1.5rem;
-		}
-
-		.entry > p:first-child{
-			font-size: 18px;
-			background-color: var(--feat-color);
-			color: black;
-			padding: 0.35rem;
-			border-radius: 50px;
-		}
-
-		.entry > a {
-			margin-left: 2rem;
-		}
-
-		.entry > p:last-child {
-			margin-left: 2rem;
-		}
-
-		#btn-div {
-			display: flex;
-			width: 75%;
-			margin: 0 auto;
-			justify-content: center;
-			margin-bottom: 4rem;
-		}
-
-		button {
-			width: 100px;
-			font-size: 18px;
-			border: solid;
-			color: black;
-			background-color: var(--feat-color);
-			border: none;
-			cursor: pointer;
-		}
-
-		button:first-child {
-			border-top-left-radius: 5px;
-			border-bottom-left-radius: 5px;
-			border-right: solid;
-		}
-
-		button:last-child {
-			border-top-right-radius: 5px;
-			border-bottom-right-radius: 5px;
-			border-left: solid;
-		}
-
-		.active {
-			background-color: #107935;
-		}
-
-		#footer {
-			width: 75%;
-			margin: 0 auto;
-			padding-bottom: 2rem;
-			text-align: center;
-			color: rgb(175, 169, 169);
-		}
-
-		.change {
-			display: flex;
-			flex-direction: column;
-			justify-content: center;
-			align-items: center;
-			width:fit-content;
-			margin-left: 0.5rem;
-		}
-
-		.change > p {
-			font-size: 12px;
-		}
-
-		.title {
-			width: 45% !important;
-			margin-left: 1rem;
-			overflow-x: hidden;
-		}
-
-		.counter {
-			width: 20px !important;
-		}
-
-		.fa-circle-minus {
-			font-size: 24px !important;
-			color: rgb(160, 158, 158) !important;
-		}
-
-		.fa-circle-down {
-			font-size: 24px !important;
-			color: rgb(133, 55, 55) !important;
-		}
-
-		.fa-circle-up {
-			font-size: 24px !important;
-			color: rgb(100, 146, 69) !important;
-		}
-
-	</style>
-	<script>
-
-	clickLink = function(id) {
-		
-		const headerChilds = document.getElementById("header").children;
-
-		for(let i=0;i<headerChilds.length;i++){
-			headerChilds[i].classList.remove("active_link");
-		}
-
-		document.getElementById(id).classList.add("active_link");
-
-		showList("short");
-
-	}
-
-	showList = function(time) {
-		const div = document.getElementById("songs");
-		div.textContent = '';
-
-		const list = document.createDocumentFragment();
-
-		const btn = document.getElementById(time);
-
-		const btnChilds= document.getElementById("btn-div").children;
-
-		for(let i=0;i<btnChilds.length;i++){
-			btnChilds[i].classList.remove("active");
-		}
-
-		btn.classList.add("active");
-
-
-		fetch("https://jasperschalla.github.io/spotify_stats.json")
-			.then(response => response.json())
-			.then(data => {
-
-				if (document.getElementById("song_link").classList.contains("active_link")) {
-
-					let songs = data.songs[time];
-					
-					for (let i=0;i<songs.songs.length;i++){
-						let div = document.createElement("div");
-						let counter = document.createElement("p");
-						let text = document.createElement("p");
-						let coverLink = document.createElement("a");
-						let cover = document.createElement("img");
-
-						div.classList.add("entry");
-						text.classList.add("title");
-
-						counter.innerHTML = `${i+1}.`;
-
-						cover.src = `${songs.covers[i]}`;
-						cover.style.width = "80px";
-
-						text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
-
-						coverLink.appendChild(cover);
-						coverLink.href = `https://open.spotify.com/search/${encodeURIComponent(songs.songs[i])}`;
-
-						div.appendChild(counter);
-						div.appendChild(coverLink);
-						div.appendChild(text);
-						list.appendChild(div);
-					}
-
-					} else {
-
-						let artists = data.artists[time];
-					
-						for (let i=0;i<artists.artists.length;i++){
-							let div = document.createElement("div");
-							let counter = document.createElement("p");
-							let text = document.createElement("p");
-							let cover = document.createElement("img");
-							let coverLink = document.createElement("a");
-
-							div.classList.add("entry");
-							text.classList.add("title");
-
-							counter.innerHTML = `${i+1}.`;
-
-							cover.src = `${artists.covers[i]}`;
-							cover.style.width = "80px";
-
-							text.innerHTML += `${artists.artists[i]}`;
-
-							coverLink.appendChild(cover);
-							coverLink.href = `https://open.spotify.com/artist/${artists.ids[i]}`;
-
-							div.appendChild(counter);
-							div.appendChild(coverLink);
-							div.appendChild(text);
-							list.appendChild(div);
-
-						}					
-
-					}
-				div.appendChild(list);
-			}).
-			then(no_data => {
-
-				fetch("https://jasperschalla.github.io/spotify_old_stats.json")
-				.then(response => response.json())
-				.then(data => {
-
-					if (document.getElementById("song_link").classList.contains("active_link")) {
-					
-						const regex = /\d{1,2}\.(.*) -.*/;
-						let entries = document.getElementById("songs").children;
-						let songs = data.songs[time];
-
-						for (let i=0;i<songs.songs.length;i++){
-
-							let old_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
-							let position_change = old_pos - (i+1);
-
-							let changeDiv = document.createElement("div");
-
-							let change = document.createElement("p");
-							let changeSymbol = document.createElement("i");
-
-							if (songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])===-1){
-								change.innerText = "<20";
-							} else {
-								change.innerText = `${position_change !== 0? Math.abs(position_change) : ''}`;
-							}
-							
-							if (songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])!==-1){
-								if (position_change<0){
-									changeSymbol.classList.add("fa-solid","fa-circle-down");
-								} else if (position_change>0){
-									changeSymbol.classList.add("fa-solid", "fa-circle-up");
-								} else {
-									changeSymbol.classList.add("fa-solid", "fa-circle-minus");
-								}
-							} else {
-								changeSymbol.classList.add("fa-solid", "fa-circle-up");
-							}
-
-							changeDiv.classList.add("change");
-							changeDiv.appendChild(changeSymbol);
-
-
-							if (position_change!==0) {
-								changeDiv.appendChild(change);
-							}
-
-							entries[i].appendChild(changeDiv);
-
-
-						}
-					} else {
-
-						const regex = /\d{1,2}\.(.*)/;
-						let entries = document.getElementById("songs").children;
-						let artists = data.artists[time];
-
-						for (let i=0;i<artists.artists.length;i++){
-
-
-							let old_pos = artists.artists.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
-							let position_change = old_pos - (i+1);
-
-							let changeDiv = document.createElement("div");
-
-							let change = document.createElement("p");
-							let changeSymbol = document.createElement("i");
-
-							if (artists.artists.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])===-1){
-								change.innerText = "<20";
-							} else {
-								change.innerText = `${position_change !== 0? Math.abs(position_change) : ''}`;
-							}
-						
-							if (artists.artists.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])!==-1){
-								if (position_change<0){
-									changeSymbol.classList.add("fa-solid","fa-circle-down");
-								} else if (position_change>0){
-									changeSymbol.classList.add("fa-solid", "fa-circle-up");
-								} else {
-									changeSymbol.classList.add("fa-solid", "fa-circle-minus");
-								}
-							} else {
-								changeSymbol.classList.add("fa-solid", "fa-circle-up");
-							}
-
-							changeDiv.classList.add("change");
-							changeDiv.appendChild(changeSymbol);
-							
-							if (position_change!==0) {
-								changeDiv.appendChild(change);
-							}
-
-							entries[i].appendChild(changeDiv);
-
-						}
-
-					}
-
-				}).catch(error => console.log(error));
-
-			}).catch(error => console.log(error));
-		
-	}
-
-	window.onload = function () {
-
-		const div = document.getElementById("songs");
-		const list = document.createDocumentFragment();
-		const footerList = document.createDocumentFragment();
-
-		const short = document.getElementById("short");
-		short.classList.add("active");
-
-		const footer = document.getElementById("footer");
-
-		fetch("https://jasperschalla.github.io/spotify_stats.json")
-			.then(response => response.json())
-			.then(data => {
-
-				let songs = data.songs.short;
-				
-				for (let i=0;i<songs.songs.length;i++){
-					let div = document.createElement("div");
-					let counter = document.createElement("p");
-					let text = document.createElement("p");
-					let cover = document.createElement("img");
-					let coverLink = document.createElement("a");
-
-					div.classList.add("entry");
-					text.classList.add("title");
-					counter.classList.add("counter");
-
-					counter.innerHTML = `${i+1}.`;
-
-					cover.src = `${songs.covers[i]}`;
-					cover.style.width = "80px";
-
-					text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
-
-					coverLink.appendChild(cover);
-					coverLink.href = `https://open.spotify.com/search/${encodeURIComponent(songs.songs[i])}`;
-
-					div.appendChild(counter);
-					div.appendChild(coverLink);
-					div.appendChild(text);
-					list.appendChild(div);
-
-				}
-				div.appendChild(list);
-
-				let updated = document.createElement("p");
-				updated.innerHTML = `Updated: ${data.updated}`;
-				footerList.appendChild(updated);
-				footer.appendChild(footerList);
-
-			}).
-			then(no_data => {
-
-				fetch("https://jasperschalla.github.io/spotify_old_stats.json")
-				.then(response => response.json())
-				.then(data => {
-					
-					const regex = /\d{1,2}\.(.*) -.*/;
-					let entries = document.getElementById("songs").children;
-					let songs = data.songs.short;
-
-					for (let i=0;i<songs.songs.length;i++){
-
-						let old_pos = songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1]) + 1;
-
-						let song_title = songs.songs[i]
-
-						let position_change = old_pos - (i+1);
-
-						let changeDiv = document.createElement("div");
-
-						let change = document.createElement("p");
-						let changeSymbol = document.createElement("i");
-
-						if (songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])===-1){
-							change.innerText = "<20";
-						} else {
-							change.innerText = `${position_change !== 0? Math.abs(position_change) : ''}`;
-						}
-						
-						if (songs.songs.indexOf(regex.exec(entries[i].innerText.replace(/(\r\n|\n|\r)/gm,""))[1])!==-1){
-							if (position_change<0){
-								changeSymbol.classList.add("fa-solid","fa-circle-down");
-							} else if (position_change>0){
-								changeSymbol.classList.add("fa-solid", "fa-circle-up");
-							} else {
-								changeSymbol.classList.add("fa-solid", "fa-circle-minus");
-							}
-						} else {
-							changeSymbol.classList.add("fa-solid", "fa-circle-up");
-						}
-
-						changeDiv.classList.add("change");
-						changeDiv.appendChild(changeSymbol);
-						
-						if (position_change!==0) {
-								changeDiv.appendChild(change);
-							}
-
-						entries[i].appendChild(changeDiv);
-
-
-					}
-
-				}).catch(error => console.log(error));
-
-			}).catch(error => console.log(error));
-
-	}
-	</script>
-	<body>
-		<div id="header">
-			<!--<h1>Spotify Top-Songs</h1>-->
-			<a onclick="clickLink(this.id)" class="navlink active_link" id="song_link"><h2>Songs</h2></a>
-			<a onclick="clickLink(this.id)" class="navlink" id="artist_link"><h2>Artists</h2></a>
-		</div>
-		<div id="body">
-			<div id="btn-div">
-				<button id="short" onclick='showList("short")'>Short</button>
-				<button id="medium" onclick='showList("medium")'>Medium</button>
-				<button id="long" onclick='showList("long")'>Long</button>
-			</div>
-			<div id="songs">
-				
-			</div>
-		</div>
-		<div id="footer">
-		</div>
-	</body>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+    />
+  </head>
+  <style>
+    html {
+      margin: 0;
+      padding: 0;
+      width: 100vw;
+      height: 100vh;
+    }
+
+    :root {
+      --main-bg-color: rgb(47, 44, 44);
+      --feat-color: #1ed760;
+      --font-color: white;
+    }
+
+    body {
+      background-color: var(--main-bg-color);
+      color: var(--font-color);
+      overflow-x: hidden;
+    }
+
+    #header {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .navlink {
+      cursor: pointer;
+    }
+
+    .navlink:first-child {
+      margin-right: 2rem;
+    }
+
+    .active_link > h2 {
+      border-bottom: 3px solid var(--feat-color);
+      margin: 0;
+    }
+
+    #body {
+      padding: 2rem 0 1rem 0;
+    }
+
+    #songs {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      width: 85%;
+      margin: 0 auto;
+    }
+
+    @media screen and (min-width: 1200px) {
+      #songs {
+        width: 45%;
+        border-left: solid;
+        border-right: solid;
+        padding: 0 5rem 0 5rem;
+        border-width: 1px;
+        border-color: rgb(62, 62, 62);
+      }
+    }
+
+    .entry {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .entry > p:first-child {
+      font-size: 18px;
+      background-color: var(--feat-color);
+      color: black;
+      padding: 0.35rem;
+      border-radius: 50px;
+    }
+
+    .entry > a {
+      margin-left: 2rem;
+    }
+
+    .entry > p:last-child {
+      margin-left: 2rem;
+    }
+
+    #btn-div {
+      display: flex;
+      width: 75%;
+      margin: 0 auto;
+      justify-content: center;
+      margin-bottom: 4rem;
+    }
+
+    button {
+      width: 100px;
+      font-size: 18px;
+      border: solid;
+      color: black;
+      background-color: var(--feat-color);
+      border: none;
+      cursor: pointer;
+    }
+
+    button:first-child {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+      border-right: solid;
+    }
+
+    button:last-child {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border-left: solid;
+    }
+
+    .active {
+      background-color: #107935;
+    }
+
+    #footer {
+      width: 75%;
+      margin: 0 auto;
+      padding-bottom: 2rem;
+      text-align: center;
+      color: rgb(175, 169, 169);
+    }
+
+    .change {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: fit-content;
+      margin-left: 4rem;
+    }
+
+    .change > p {
+      font-size: 12px;
+    }
+
+    .title {
+      width: 60% !important;
+      margin-left: 1rem;
+      overflow-x: hidden;
+    }
+
+    .counter {
+      width: 20px !important;
+    }
+
+    .fa-circle-minus {
+      font-size: 24px !important;
+      color: rgb(160, 158, 158) !important;
+    }
+
+    .fa-circle-down {
+      font-size: 24px !important;
+      color: rgb(133, 55, 55) !important;
+    }
+
+    .fa-circle-up {
+      font-size: 24px !important;
+      color: rgb(100, 146, 69) !important;
+    }
+
+    .container {
+      display: flex;
+      width: 70%;
+      margin: 0 auto;
+      justify-content: space-between;
+    }
+
+    @media screen and (max-width: 900px) {
+      .container {
+        width: 90% !important;
+      }
+    }
+  </style>
+  <script>
+    clickLink = function (id) {
+      const headerChilds = document.getElementById("header").children;
+
+      for (let i = 0; i < headerChilds.length; i++) {
+        headerChilds[i].classList.remove("active_link");
+      }
+
+      document.getElementById(id).classList.add("active_link");
+
+      showList("short");
+    };
+
+    showList = function (time) {
+      const div = document.getElementById("songs");
+      div.textContent = "";
+
+      const list = document.createDocumentFragment();
+
+      const btn = document.getElementById(time);
+
+      const btnChilds = document.getElementById("btn-div").children;
+
+      for (let i = 0; i < btnChilds.length; i++) {
+        btnChilds[i].classList.remove("active");
+      }
+
+      btn.classList.add("active");
+
+      fetch("https://jasperschalla.github.io/spotify_stats.json")
+        .then((response) => response.json())
+        .then((data) => {
+          if (
+            document
+              .getElementById("song_link")
+              .classList.contains("active_link")
+          ) {
+            let songs = data.songs[time];
+
+            for (let i = 0; i < songs.songs.length; i++) {
+              let container = document.createElement("div");
+              let div = document.createElement("div");
+              let counter = document.createElement("p");
+              let text = document.createElement("p");
+              let coverLink = document.createElement("a");
+              let cover = document.createElement("img");
+
+              container.classList.add("container");
+              div.classList.add("entry");
+              text.classList.add("title");
+
+              counter.innerHTML = `${i + 1}.`;
+
+              cover.src = `${songs.covers[i]}`;
+              cover.style.width = "80px";
+
+              text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
+
+              coverLink.appendChild(cover);
+              coverLink.href = `https://open.spotify.com/search/${encodeURIComponent(
+                songs.songs[i]
+              )}`;
+
+              div.appendChild(counter);
+              div.appendChild(coverLink);
+              div.appendChild(text);
+              container.appendChild(div);
+              list.appendChild(container);
+            }
+          } else {
+            let artists = data.artists[time];
+
+            for (let i = 0; i < artists.artists.length; i++) {
+              let container = document.createElement("div");
+              let div = document.createElement("div");
+              let counter = document.createElement("p");
+              let text = document.createElement("p");
+              let cover = document.createElement("img");
+              let coverLink = document.createElement("a");
+
+              container.classList.add("container");
+              div.classList.add("entry");
+              text.classList.add("title");
+
+              counter.innerHTML = `${i + 1}.`;
+
+              cover.src = `${artists.covers[i]}`;
+              cover.style.width = "80px";
+
+              text.innerHTML += `${artists.artists[i]}`;
+
+              coverLink.appendChild(cover);
+              coverLink.href = `https://open.spotify.com/artist/${artists.ids[i]}`;
+
+              div.appendChild(counter);
+              div.appendChild(coverLink);
+              div.appendChild(text);
+              container.appendChild(div);
+              list.appendChild(container);
+            }
+          }
+          div.appendChild(list);
+        })
+        .then((no_data) => {
+          fetch("https://jasperschalla.github.io/spotify_old_stats.json")
+            .then((response) => response.json())
+            .then((data) => {
+              if (
+                document
+                  .getElementById("song_link")
+                  .classList.contains("active_link")
+              ) {
+                const regex = /\d{1,2}\.(.*) -.*/;
+                let entries = document.getElementById("songs").children;
+                let songs = data.songs[time];
+
+                for (let i = 0; i < songs.songs.length; i++) {
+                  let old_pos =
+                    songs.songs.indexOf(
+                      regex.exec(
+                        entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                      )[1]
+                    ) + 1;
+                  let position_change = old_pos - (i + 1);
+
+                  let changeDiv = document.createElement("div");
+
+                  let change = document.createElement("p");
+                  let changeSymbol = document.createElement("i");
+
+                  if (
+                    songs.songs.indexOf(
+                      regex.exec(
+                        entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                      )[1]
+                    ) === -1
+                  ) {
+                    change.innerText = "<20";
+                  } else {
+                    change.innerText = `${
+                      position_change !== 0 ? Math.abs(position_change) : ""
+                    }`;
+                  }
+
+                  if (
+                    songs.songs.indexOf(
+                      regex.exec(
+                        entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                      )[1]
+                    ) !== -1
+                  ) {
+                    if (position_change < 0) {
+                      changeSymbol.classList.add("fa-solid", "fa-circle-down");
+                    } else if (position_change > 0) {
+                      changeSymbol.classList.add("fa-solid", "fa-circle-up");
+                    } else {
+                      changeSymbol.classList.add("fa-solid", "fa-circle-minus");
+                    }
+                  } else {
+                    changeSymbol.classList.add("fa-solid", "fa-circle-up");
+                  }
+
+                  changeDiv.classList.add("change");
+                  changeDiv.appendChild(changeSymbol);
+
+                  if (position_change !== 0) {
+                    changeDiv.appendChild(change);
+                  }
+
+                  entries[i].appendChild(changeDiv);
+                }
+              } else {
+                const regex = /\d{1,2}\.(.*)/;
+                let entries = document.getElementById("songs").children;
+                let artists = data.artists[time];
+
+                for (let i = 0; i < artists.artists.length; i++) {
+                  let old_pos =
+                    artists.artists.indexOf(
+                      regex.exec(
+                        entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                      )[1]
+                    ) + 1;
+                  let position_change = old_pos - (i + 1);
+
+                  let changeDiv = document.createElement("div");
+
+                  let change = document.createElement("p");
+                  let changeSymbol = document.createElement("i");
+
+                  if (
+                    artists.artists.indexOf(
+                      regex.exec(
+                        entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                      )[1]
+                    ) === -1
+                  ) {
+                    change.innerText = "<20";
+                  } else {
+                    change.innerText = `${
+                      position_change !== 0 ? Math.abs(position_change) : ""
+                    }`;
+                  }
+
+                  if (
+                    artists.artists.indexOf(
+                      regex.exec(
+                        entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                      )[1]
+                    ) !== -1
+                  ) {
+                    if (position_change < 0) {
+                      changeSymbol.classList.add("fa-solid", "fa-circle-down");
+                    } else if (position_change > 0) {
+                      changeSymbol.classList.add("fa-solid", "fa-circle-up");
+                    } else {
+                      changeSymbol.classList.add("fa-solid", "fa-circle-minus");
+                    }
+                  } else {
+                    changeSymbol.classList.add("fa-solid", "fa-circle-up");
+                  }
+
+                  changeDiv.classList.add("change");
+                  changeDiv.appendChild(changeSymbol);
+
+                  if (position_change !== 0) {
+                    changeDiv.appendChild(change);
+                  }
+
+                  entries[i].appendChild(changeDiv);
+                }
+              }
+            })
+            .catch((error) => console.log(error));
+        })
+        .catch((error) => console.log(error));
+    };
+
+    window.onload = function () {
+      const div = document.getElementById("songs");
+      const list = document.createDocumentFragment();
+      const footerList = document.createDocumentFragment();
+
+      const short = document.getElementById("short");
+      short.classList.add("active");
+
+      const footer = document.getElementById("footer");
+
+      fetch("https://jasperschalla.github.io/spotify_stats.json")
+        .then((response) => response.json())
+        .then((data) => {
+          let songs = data.songs.short;
+
+          for (let i = 0; i < songs.songs.length; i++) {
+            let container = document.createElement("div");
+            let div = document.createElement("div");
+            let counter = document.createElement("p");
+            let text = document.createElement("p");
+            let cover = document.createElement("img");
+            let coverLink = document.createElement("a");
+
+            container.classList.add("container");
+            div.classList.add("entry");
+            text.classList.add("title");
+            counter.classList.add("counter");
+
+            counter.innerHTML = `${i + 1}.`;
+
+            cover.src = `${songs.covers[i]}`;
+            cover.style.width = "80px";
+
+            text.innerHTML += `${songs.songs[i]} - ${songs.artists[i]}`;
+
+            coverLink.appendChild(cover);
+            coverLink.href = `https://open.spotify.com/search/${encodeURIComponent(
+              songs.songs[i]
+            )}`;
+
+            div.appendChild(counter);
+            div.appendChild(coverLink);
+            div.appendChild(text);
+            container.appendChild(div);
+            list.appendChild(container);
+          }
+          div.appendChild(list);
+
+          let updated = document.createElement("p");
+          updated.innerHTML = `Updated: ${data.updated}`;
+          footerList.appendChild(updated);
+          footer.appendChild(footerList);
+        })
+        .then((no_data) => {
+          fetch("https://jasperschalla.github.io/spotify_old_stats.json")
+            .then((response) => response.json())
+            .then((data) => {
+              const regex = /\d{1,2}\.(.*) -.*/;
+              let entries = document.getElementById("songs").children;
+              let songs = data.songs.short;
+
+              for (let i = 0; i < songs.songs.length; i++) {
+                let old_pos =
+                  songs.songs.indexOf(
+                    regex.exec(
+                      entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                    )[1]
+                  ) + 1;
+
+                let song_title = songs.songs[i];
+
+                let position_change = old_pos - (i + 1);
+
+                let changeDiv = document.createElement("div");
+
+                let change = document.createElement("p");
+                let changeSymbol = document.createElement("i");
+
+                if (
+                  songs.songs.indexOf(
+                    regex.exec(
+                      entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                    )[1]
+                  ) === -1
+                ) {
+                  change.innerText = "<20";
+                } else {
+                  change.innerText = `${
+                    position_change !== 0 ? Math.abs(position_change) : ""
+                  }`;
+                }
+
+                if (
+                  songs.songs.indexOf(
+                    regex.exec(
+                      entries[i].innerText.replace(/(\r\n|\n|\r)/gm, "")
+                    )[1]
+                  ) !== -1
+                ) {
+                  if (position_change < 0) {
+                    changeSymbol.classList.add("fa-solid", "fa-circle-down");
+                  } else if (position_change > 0) {
+                    changeSymbol.classList.add("fa-solid", "fa-circle-up");
+                  } else {
+                    changeSymbol.classList.add("fa-solid", "fa-circle-minus");
+                  }
+                } else {
+                  changeSymbol.classList.add("fa-solid", "fa-circle-up");
+                }
+
+                changeDiv.classList.add("change");
+                changeDiv.appendChild(changeSymbol);
+
+                if (position_change !== 0) {
+                  changeDiv.appendChild(change);
+                }
+
+                entries[i].appendChild(changeDiv);
+              }
+            })
+            .catch((error) => console.log(error));
+        })
+        .catch((error) => console.log(error));
+    };
+  </script>
+  <body>
+    <div id="header">
+      <!--<h1>Spotify Top-Songs</h1>-->
+      <a onclick="clickLink(this.id)" class="navlink active_link" id="song_link"
+        ><h2>Songs</h2></a
+      >
+      <a onclick="clickLink(this.id)" class="navlink" id="artist_link"
+        ><h2>Artists</h2></a
+      >
+    </div>
+    <div id="body">
+      <div id="btn-div">
+        <button id="short" onclick='showList("short")'>Short</button>
+        <button id="medium" onclick='showList("medium")'>Medium</button>
+        <button id="long" onclick='showList("long")'>Long</button>
+      </div>
+      <div id="songs"></div>
+    </div>
+    <div id="footer"></div>
+  </body>
 </html>
