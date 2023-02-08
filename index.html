@@ -149,7 +149,7 @@
     }
 
     .title {
-      width: 60% !important;
+      min-width: 100px !important;
       margin-left: 1rem;
       overflow-x: hidden;
     }
@@ -182,7 +182,16 @@
 
     @media screen and (max-width: 900px) {
       .container {
-        width: 90% !important;
+        width: 100% !important;
+      }
+    }
+
+    @media screen and (max-width: 500px) {
+      .change {
+        margin-left: 0.5rem;
+      }
+      #songs {
+        width: 90%;
       }
     }
   </style>
