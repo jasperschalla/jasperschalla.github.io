@@ -9,19 +9,19 @@ from git import Repo
 from datetime import datetime
 from dotenv import load_dotenv
 
-load_dotenv('/home/pi/Documents/python/jasperschalla.github.io/.env')
+load_dotenv('/home/jasper/Documents/projects/spotify/.env')
 
-with open("/home/pi/Documents/python/jasperschalla.github.io/spotify_stats.json","r") as old:
-    with open("/home/pi/Documents/python/jasperschalla.github.io/spotify_old_stats.json","w") as new:
+with open("/home/jasper/Documents/projects/spotify/spotify_stats.json","r") as old:
+    with open("/home/jasper/Documents/projects/spotify/spotify_old_stats.json","w") as new:
         json.dump(json.loads(old.read()),new)
 
-PATH_OF_GIT_REPO = '/home/pi/Documents/python/jasperschalla.github.io/.git'  
+PATH_OF_GIT_REPO = '/home/jasper/Documents/projects/spotify'  
 COMMIT_MESSAGE = 'Update Spotify data'
 
 username = "veka33"
 client_secret = os.environ.get("SECRET")
 client_id = os.environ.get("CLIENTID")
-redirect_uri = 'http://localhost:8080/callback'
+redirect_uri = 'http://127.0.0.1:8888/callback'
 
 client_credentials_manager = SpotifyClientCredentials(client_id=client_id, client_secret=client_secret) 
 sp = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
@@ -30,7 +30,7 @@ scope = 'user-top-read'
 
 token = util.prompt_for_user_token(username=username, scope=scope,redirect_uri=redirect_uri,
                                     client_id=client_id,client_secret=client_secret,show_dialog=False,
-                                    cache_path='/home/pi/Documents/python/jasperschalla.github.io/.cache-veka33')
+                                    cache_path='/home/jasper/Documents/projects/.cache-veka33')
 
 if token:
     sp = spotipy.Spotify(auth=token)
@@ -116,7 +116,7 @@ if token:
                  "artists":{"long":artist_stats_long,"medium":artist_stats_medium,"short":artist_stats_short},
                  "updated":datetime.today().strftime('%Y-%m-%d %H:%M:%S')}
 
-    with open("/home/pi/Documents/python/jasperschalla.github.io/spotify_stats.json","w") as fp:
+    with open("/home/jasper/Documents/projects/spotify/spotify_stats.json","w") as fp:
         json.dump(top_stats,fp)
 
     repo = Repo(PATH_OF_GIT_REPO)
